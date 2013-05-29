@@ -300,7 +300,7 @@ def read_header(nrrdfile):
         if line.startswith('#'):
             continue
         # Single blank line separates the header from the data
-        if line is '':
+        if line == '\n':
             break
 
         # Trailing whitespace ignored per the NRRD spec
@@ -309,7 +309,7 @@ def read_header(nrrdfile):
         # Handle the <key>:=<value> lines first since <value> may contain a
         # ': ' which messes up the <field>: <desc> parsing
         key_value = line.split(':=', 1)
-        if len(key_value) is 2:
+        if len(key_value) == 2:
             key, value = key_value
             # TODO: escape \\ and \n ??
             # value.replace(r'\\\\', r'\\').replace(r'\n', '\n')
@@ -318,7 +318,7 @@ def read_header(nrrdfile):
 
         # Handle the "<field>: <desc>" lines.
         field_desc = line.split(': ', 1)
-        if len(field_desc) is 2:
+        if len(field_desc) == 2:
             field, desc = field_desc
             if field not in _NRRD_FIELD_PARSERS:
                 raise NrrdError('Unexpected field in nrrd header: "%s".' % field)
